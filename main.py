@@ -8,12 +8,12 @@ handler = Mangum(app)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World Again!"}
+    return {"message": "Hello World Again 2!"}
 
 @app.post("/answer")
 async def answer(request: Request):
     question = await request.form().get("Body")
     answer = generate_answer(question)
-    response = MessagingResponse()
-    response.message(answer)
-    return str(response)
+    # response = MessagingResponse()
+    # response.message(answer)
+    return {"message": answer}
