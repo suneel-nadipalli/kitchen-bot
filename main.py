@@ -10,12 +10,12 @@ handler = Mangum(app)
 async def root():
     return {"message": "Hello World Again - Testing messaging v1!"}
 
-@app.get("/test_get")
-async def test_get():
+@app.get("/hi")
+async def hi():
     return {"message": "Testing Get Route - Hello from the other side!"}
 
-@app.post("/test_post")
-async def test_post(name: str = Form(...)):
+@app.post("/name")
+async def get_name(name: str = Form(...)):
     return {"message": f"Hello {name}! This is a test post route."}
 
 @app.post("/message")
