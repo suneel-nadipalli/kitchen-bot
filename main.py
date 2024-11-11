@@ -14,7 +14,7 @@ handler = Mangum(app)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World Again - Adding logging!"}
+    return {"message": "Hello World Again - Changed GPT response function"}
 
 @app.get("/hi")
 async def hi():

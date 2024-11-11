@@ -1,4 +1,5 @@
 import openai, os
+from openai import OpenAI
 from twilio.rest import Client
 
 # Your Twilio credentials
@@ -10,31 +11,36 @@ client = Client(account_sid, auth_token)
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-# def send_message(body_text, sender, receiver):
-#     client.messages.create(
-#         from_=f"whatsapp:{twilio_phone_number}", 
-#         body=body_text, 
-#         to=f"whatsapp:{receiver}"
-#     )
+
+openai_client = OpenAI(
+    api_key=openai.api_key,
+)
 
 # Define a function to generate answers using GPT-3
-def generate_answer(question, logger):
+def generate_answer(question, logger, model="gpt-3.5-turbo"):
     if not openai.api_key:
         return "Error: API key is missing."
 
     try:
         logger.info(f"Generating answer for: {question}")
 
-        response = openai.Completion.create(
-            engine="text-davinci-002",
-            prompt=f"Q: {question}\nA:",
-            max_tokens=1024,
-            n=1,
-            stop=None,
-            temperature=0.7,
-        )
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            {
+                "role": "user",
+                "content": question
+            }
+            ]
 
-        answer = response.choices[0].text.strip()
+        response = openai_client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=0, # this is the degree of randomness of the model's output
+        )
+        answer = response.choices[0].message.content
 
         logger.info(f"Generated answer: {answer}")
         
