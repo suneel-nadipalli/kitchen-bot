@@ -31,7 +31,7 @@ async def answer(request: Request):
 
     answer = generate_answer(msg_body)
 
-    send_message(answer, sender, reciever)
+    # send_message(answer, sender, reciever)
 
     # Generate Twilio response
     resp = MessagingResponse()

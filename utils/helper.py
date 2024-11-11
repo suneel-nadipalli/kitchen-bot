@@ -10,12 +10,12 @@ client = Client(account_sid, auth_token)
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-def send_message(body_text, sender, receiver):
-    client.messages.create(
-        from_=f"whatsapp:{twilio_phone_number}", 
-        body=body_text, 
-        to=f"whatsapp:{receiver}"
-    )
+# def send_message(body_text, sender, receiver):
+#     client.messages.create(
+#         from_=f"whatsapp:{twilio_phone_number}", 
+#         body=body_text, 
+#         to=f"whatsapp:{receiver}"
+#     )
 
 # Define a function to generate answers using GPT-3
 def generate_answer(question):
