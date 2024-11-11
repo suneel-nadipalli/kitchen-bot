@@ -18,11 +18,13 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 #     )
 
 # Define a function to generate answers using GPT-3
-def generate_answer(question):
+def generate_answer(question, logger):
     if not openai.api_key:
         return "Error: API key is missing."
 
     try:
+        logger.info(f"Generating answer for: {question}")
+
         response = openai.Completion.create(
             engine="text-davinci-002",
             prompt=f"Q: {question}\nA:",
@@ -31,7 +33,12 @@ def generate_answer(question):
             stop=None,
             temperature=0.7,
         )
+
         answer = response.choices[0].text.strip()
+
+        logger.info(f"Generated answer: {answer}")
+        
         return answer
+    
     except Exception as e:
         return f"An error occurred: {e}"

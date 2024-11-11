@@ -3,12 +3,18 @@ from mangum import Mangum
 from utils.helper import *
 from twilio.twiml.messaging_response import MessagingResponse
 
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
+
 app = FastAPI()
 handler = Mangum(app)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World Again - Testing messaging v1!"}
+    return {"message": "Hello World Again - Adding logging!"}
 
 @app.get("/hi")
 async def hi():
@@ -25,17 +31,22 @@ async def answer(request: Request):
 
     msg_body = form_data.get("Body")
 
+    logger.info(f"Received message: {msg_body}")
+
     sender = form_data.get("From")
+
+    logger.info(f"Sender: {sender}")
 
     reciever = form_data.get("To")
 
-    answer = generate_answer(msg_body)
+    logger.info(f"Receiver: {reciever}")
 
-    # send_message(answer, sender, reciever)
+    answer = generate_answer(question=msg_body, logger=logger)
 
-    # Generate Twilio response
     resp = MessagingResponse()
     resp.message(answer)
+
+    logger.info(f"Sending message: {str(resp)}")
 
     return str(resp)
 
